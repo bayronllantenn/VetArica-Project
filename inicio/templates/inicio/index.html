@@ -1,13 +1,271 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Vet Arica</title>
-</head>
-<body>
-    <h1>Vet Arica</h1>
-    <p>Sistema de gestión de la clínica veterinaria.</p>
-    <a href="{% url 'login' %}">Iniciar sesión</a>
-    <a href="{% url 'registro' %}">Crear cuenta</a>
-</body>
-</html>
+{% extends 'inicio/base.html' %}
+{% load static %}
+
+{% block title %}Vet Arica - Clínica Veterinaria{% endblock %}
+
+{% block content %}
+    <section class="hero-photo-section">
+      <img
+        src="{% static 'inicio/img/fondo.png' %}"
+        alt="Sala de atención de Vet Arica"
+        class="hero-bg-img"
+      />
+      <div class="container py-5">
+        <p class="hero-address mb-2">
+          <i class="bi bi-geo-alt"></i> Villa El Bosque, Payachatas 1749, Arica
+        </p>
+        <h1 class="display-4 mb-2">Clínica Veterinaria<br />Vet Arica</h1>
+        <p class="hero-subtitle fs-3 mb-3">Cuidamos a tu mejor amigo</p>
+        <p class="hero-text fs-5 mb-4" style="max-width: 560px">
+          En Vet Arica ofrecemos la mejor atención veterinaria para tus
+          mascotas. Reserva tu hora en línea de forma fácil, rápida y segura en
+          pocos pasos.
+        </p>
+        <a href="{% url 'agendar' %}" class="btn btn-teal btn-lg px-4"
+          >Agendar Cita en Línea</a
+        >
+      </div>
+    </section>
+
+    <section id="servicios" class="py-5">
+      <div class="container py-4">
+        <h2 class="section-title text-center mb-5">Nuestros Servicios</h2>
+        <p
+          class="text-center text-secondary mb-5 mx-auto"
+          style="max-width: 640px"
+        >
+          Brindamos una gama completa de especialidades médicas para el
+          bienestar de tu mascota.
+        </p>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="service-card p-4 h-100">
+              <div class="icon-circle mb-3">
+                <i class="bi bi-heart-pulse"></i>
+              </div>
+              <h5 class="mb-2">Consulta General</h5>
+              <p class="text-secondary small mb-0">
+                Evaluación general de salud y chequeo preventivo de tu mascota.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="service-card p-4 h-100">
+              <div class="icon-circle mb-3"><i class="bi bi-eye"></i></div>
+              <h5 class="mb-2">Oftalmología</h5>
+              <p class="text-secondary small mb-0">
+                Diagnóstico y tratamiento de problemas oculares.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="service-card p-4 h-100">
+              <div class="icon-circle mb-3"><i class="bi bi-bandaid"></i></div>
+              <h5 class="mb-2">Dermatología</h5>
+              <p class="text-secondary small mb-0">
+                Evaluación especializada de piel y pelaje.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="service-card p-4 h-100">
+              <div class="icon-circle mb-3">
+                <i class="bi bi-emoji-smile"></i>
+              </div>
+              <h5 class="mb-2">Odontología</h5>
+              <p class="text-secondary small mb-0">
+                Cuidado dental completo para prevenir enfermedades bucales.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="service-card p-4 h-100">
+              <div class="icon-circle mb-3"><i class="bi bi-scissors"></i></div>
+              <h5 class="mb-2">Cirugía</h5>
+              <p class="text-secondary small mb-0">
+                Procedimientos quirúrgicos con equipo especializado.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="service-card p-4 h-100">
+              <div class="icon-circle mb-3">
+                <i class="bi bi-soundwave"></i>
+              </div>
+              <h5 class="mb-2">Ecografía</h5>
+              <p class="text-secondary small mb-0">
+                Estudio de imágenes para un diagnóstico preciso.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="ubicacion"
+      class="py-5"
+      style="background-color: var(--teal-50)"
+    >
+      <div class="container py-4">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-5">
+            <h2 class="section-title mb-4">Dónde Encontrarnos</h2>
+            <div class="d-flex gap-3 mb-4">
+              <div class="icon-circle flex-shrink-0">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+              <div>
+                <div class="fw-semibold">Dirección</div>
+                <div class="text-secondary">
+                  Villa El Bosque, Payachatas 1749, Arica, Arica y Parinacota
+                </div>
+              </div>
+            </div>
+            <div class="d-flex gap-3">
+              <div class="icon-circle flex-shrink-0">
+                <i class="bi bi-clock-history"></i>
+              </div>
+              <div>
+                <div class="fw-semibold">Horario de Atención</div>
+                <div class="text-secondary">Lunes a Viernes:</div>
+                <div class="text-secondary">Sábado:</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <iframe
+              src="https://maps.google.com/maps?q=Villa+El+Bosque,+Payachatas+1749,+Arica,+Arica+y+Parinacota&output=embed"
+              width="100%"
+              height="320"
+              style="border: 0; border-radius: 1rem"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="opiniones" class="py-5">
+      <div class="container py-4">
+        <div class="text-center mb-5">
+          <h2 class="section-title mb-2">Lo que dicen de nosotros</h2>
+          <div class="text-warning fs-5">
+            4.8 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+            ><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+            ><i class="bi bi-star-half"></i>
+            <span class="text-secondary fs-6">(150+ opiniones en Google)</span>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="border rounded-4 p-4 h-100">
+              <div class="text-warning mb-2">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+                ><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+                ><i class="bi bi-star-fill"></i>
+              </div>
+              <p class="text-secondary mb-3">
+                "Excelente atención. Muy dedicados y preocupados por mi mascota.
+                Totalmente recomendados."
+              </p>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle">CR</div>
+                <span class="fw-semibold">Camila Rojas</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="border rounded-4 p-4 h-100">
+              <div class="text-warning mb-2">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+                ><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+                ><i class="bi bi-star-fill"></i>
+              </div>
+              <p class="text-secondary mb-3">
+                "Llevé a mi perro de urgencia y lo atendieron al tiro.
+                Profesionales y con mucho cariño."
+              </p>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle">JV</div>
+                <span class="fw-semibold">Jorge Valenzuela</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="border rounded-4 p-4 h-100">
+              <div class="text-warning mb-2">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+                ><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+                ><i class="bi bi-star-fill"></i>
+              </div>
+              <p class="text-secondary mb-3">
+                "Explicaciones claras y amables en cada control. Un lugar de
+                confianza en Arica."
+              </p>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle">VM</div>
+                <span class="fw-semibold">Valentina Muñoz</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="pt-5">
+      <div class="container pb-5">
+        <div class="row g-4">
+          <div class="col-lg-3 col-md-6">
+            <h6 class="footer-heading">Vet Arica</h6>
+            <p class="mb-1">Villa El Bosque, Payachatas 1749, Arica</p>
+            <p class="mb-1">contacto@vetarica.cl</p>
+            <p class="mb-4">+56 58 233 4455</p>
+            <h6 class="footer-heading">Síguenos</h6>
+            <div class="d-flex gap-2">
+              <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="social-icon"
+                ><i class="bi bi-instagram"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <h6 class="footer-heading">Servicios</h6>
+            <ul class="footer-links">
+              <li><a href="#servicios">Consulta General</a></li>
+              <li><a href="#servicios">Oftalmología</a></li>
+              <li><a href="#servicios">Dermatología</a></li>
+              <li><a href="#servicios">Odontología</a></li>
+              <li><a href="#servicios">Cirugía</a></li>
+              <li><a href="#servicios">Ecografía</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <h6 class="footer-heading">Navegación</h6>
+            <ul class="footer-links">
+              <li><a href="#ubicacion">Ubicación</a></li>
+              <li><a href="#opiniones">Opiniones</a></li>
+              <li><a href="{% url 'agendar' %}">Agendar Cita</a></li>
+            </ul>
+          </div>
+          <div
+            class="col-lg-3 col-md-6 d-flex flex-column align-items-end justify-content-between footer-photo-col"
+          >
+            <img
+              src="{% static 'inicio/img/logo2.png' %}"
+              alt="Vet Arica"
+              class="footer-logo align-self-center mb-3"
+            />
+            <img
+              src="{% static 'inicio/img/footer.png' %}"
+              alt="Mascotas atendidas en Vet Arica"
+              class="footer-photo"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom py-3">
+        <div class="text-center small">Vet Arica © {% now "Y" %}</div>
+      </div>
+    </footer>
+{% endblock %}

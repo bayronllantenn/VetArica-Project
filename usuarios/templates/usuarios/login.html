@@ -1,28 +1,62 @@
-{% load crispy_forms_tags %}
+{% load static %}
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Iniciar Sesion - Vet Arica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Iniciar Sesión - Vet Arica</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
       rel="stylesheet"
     />
+    <link href="{% static 'usuarios/css/login.css' %}" rel="stylesheet" />
   </head>
   <body>
-    <div class="container py-5" style="max-width: 480px">
-      <h1 class="mb-4">Iniciar Sesion</h1>
+    <div class="auth-wrap">
+    <form class="form" method="post" novalidate>
+      {% csrf_token %}
+      <a href="{% url 'home' %}" class="auth-back-link">
+        <i class="bi bi-arrow-left"></i> Volver al inicio
+      </a>
+      <img
+        src="{% static 'inicio/img/logo.jpg' %}"
+        alt="Vet Arica"
+        class="auth-logo"
+      />
+      <p class="form-title">Inicia sesión en tu cuenta</p>
 
       {% if messages %} {% for message in messages %}
       <div class="alert alert-{{ message.tags }}">{{ message }}</div>
       {% endfor %} {% endif %}
 
-      <form method="post" novalidate>
-        {% csrf_token %} {{ form|crispy }}
-        <button type="submit" class="btn btn-primary w-100 mt-3">
-          Iniciar Sesion
-        </button>
-      </form>
+      <div class="input-container">
+        <input
+          type="email"
+          name="username"
+          id="id_username"
+          placeholder="Correo electrónico"
+          value="{{ form.username.value|default:'' }}"
+          autofocus
+          required
+        />
+      </div>
+      <div class="input-container">
+        <input
+          type="password"
+          name="password"
+          id="id_password"
+          placeholder="Contraseña"
+          required
+        />
+      </div>
+
+      <button type="submit" class="submit">Iniciar sesión</button>
+
+      <p class="signup-link">
+        ¿No tienes cuenta?
+        <a href="{% url 'registro' %}">Regístrate</a>
+      </p>
+    </form>
     </div>
   </body>
 </html>

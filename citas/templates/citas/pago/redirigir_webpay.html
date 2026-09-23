@@ -1,0 +1,31 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redirigiendo a Webpay - Vet Arica</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="{% static 'citas/css/agendar.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="form text-center">
+      <p class="form-title">Redirigiendo a Webpay</p>
+      <p class="form-subtitle">
+        Espera un momento, seras enviado al portal de pago.
+      </p>
+
+      <form id="webpay-form" method="POST" action="{{ url }}">
+        <input type="hidden" name="token_ws" value="{{ token }}" />
+        <button type="submit" class="submit">Ir a pagar</button>
+      </form>
+    </div>
+
+    <script>
+      document.getElementById('webpay-form').submit();
+    </script>
+  </body>
+</html>

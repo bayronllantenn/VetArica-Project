@@ -1,0 +1,103 @@
+{% extends 'inicio/base.html' %} {% load static %} {% block title %}Mi cuenta -
+Vet Arica{% endblock %} {% block css %}
+<link href="{% static 'usuarios/css/dashboard.css' %}" rel="stylesheet" />
+{% endblock %} {% block navbar %}
+<nav class="navbar navbar-expand-lg bg-white sticky-top border-bottom">
+  <div class="container py-2 d-flex align-items-center justify-content-between">
+    <a
+      class="navbar-brand fs-4 d-flex align-items-center gap-2"
+      href="{% url 'home' %}"
+    >
+      <img
+        src="{% static 'inicio/img/logo.jpg' %}"
+        alt="Vet Arica"
+        height="36"
+        class="rounded"
+      />
+      Vet Arica
+    </a>
+    <div class="d-flex align-items-center gap-3">
+      <a class="btn btn-teal px-3" href="{% url 'agendar' %}">Agendar Cita</a>
+      <a href="{% url 'logout' %}" class="Btn">
+        <div class="sign">
+          <svg viewBox="0 0 512 512">
+            <path
+              d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
+            ></path>
+          </svg>
+        </div>
+        <div class="text">Salir</div>
+      </a>
+    </div>
+  </div>
+</nav>
+{% endblock %} {% block content %}
+<main class="container dash-content">
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %} {% endif %}
+
+  <div class="dash-hero">
+    <div>
+      <h1>Hola, {{ user.first_name }}</h1>
+      <p class="dash-subtitle">{{ user.email }}</p>
+    </div>
+  </div>
+
+  <h2 class="dash-section-title">Mis citas</h2>
+
+  {% if citas %}
+  <div class="cita-table-wrap">
+    <table class="cita-table">
+      <thead>
+        <tr>
+          <th>Mascota</th>
+          <th>Tipo de consulta</th>
+          <th>Fecha y hora</th>
+          <th>Estado</th>
+          <th>Pago</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cita in citas %}
+        <tr>
+          <td class="cita-mascota">{{ cita.nombre_mascota }}</td>
+          <td>{{ cita.tipo_consulta.nombre }}</td>
+          <td>
+            <i class="bi bi-calendar-event"></i>
+            {{ cita.fecha_hora|date:"d/m/Y H:i" }}
+          </td>
+          <td>
+            <span class="badge-estado badge-{{ cita.estado|lower }}"
+              >{{ cita.estado }}</span
+            >
+          </td>
+          <td>
+            <span class="badge-pago badge-{{ cita.estado_pago|lower }}"
+              >{{ cita.estado_pago }}</span
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="cita-empty">
+    <i class="bi bi-calendar-x"></i>
+    <p>Todavía no tienes citas agendadas.</p>
+    <a href="{% url 'agendar' %}" class="btn btn-teal"
+      >Agendar mi primera cita</a
+    >
+  </div>
+  {% endif %}
+</main>
+{% endblock %} {% block extra_js %}
+<script>
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+</script>
+{% endblock %}

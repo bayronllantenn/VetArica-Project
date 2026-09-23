@@ -1,0 +1,141 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agendar Cita - Vet Arica</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+      rel="stylesheet"
+    />
+    <link href="{% static 'citas/css/agendar.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    <form class="form" method="post" novalidate>
+      {% csrf_token %}
+      <a href="{% url 'home' %}" class="auth-back-link">
+        <i class="bi bi-arrow-left"></i> Volver al inicio
+      </a>
+      <p class="form-title">Agendar cita</p>
+      <p class="form-subtitle">
+        Completa tus datos y nos contactaremos contigo para confirmar la hora.
+        No necesitas crear una cuenta.
+      </p>
+
+      <p class="section-title">Datos de contacto</p>
+
+      <div class="input-row">
+        <div class="input-container">
+          <input
+            type="text"
+            name="nombre"
+            id="id_nombre"
+            placeholder="Nombre"
+            value="{{ form.nombre.value|default:'' }}"
+            required
+          />
+          {% if form.nombre.errors %}
+          <span class="field-error">{{ form.nombre.errors.0 }}</span>
+          {% endif %}
+        </div>
+        <div class="input-container">
+          <input
+            type="text"
+            name="apellido"
+            id="id_apellido"
+            placeholder="Apellido"
+            value="{{ form.apellido.value|default:'' }}"
+            required
+          />
+          {% if form.apellido.errors %}
+          <span class="field-error">{{ form.apellido.errors.0 }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="input-row">
+        <div class="input-container">
+          <input
+            type="email"
+            name="email"
+            id="id_email"
+            placeholder="nombre@gmail.com"
+            value="{{ form.email.value|default:'' }}"
+            required
+          />
+          {% if form.email.errors %}
+          <span class="field-error">{{ form.email.errors.0 }}</span>
+          {% endif %}
+        </div>
+        <div class="input-container">
+          <input
+            type="text"
+            name="telefono"
+            id="id_telefono"
+            placeholder="912345678"
+            value="{{ form.telefono.value|default:'' }}"
+            required
+          />
+          {% if form.telefono.errors %}
+          <span class="field-error">{{ form.telefono.errors.0 }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <p class="section-title">Datos de la atención</p>
+
+      <div class="input-container">
+        <input
+          type="text"
+          name="nombre_mascota"
+          id="id_nombre_mascota"
+          placeholder="Nombre de tu mascota"
+          value="{{ form.nombre_mascota.value|default:'' }}"
+          required
+        />
+        {% if form.nombre_mascota.errors %}
+        <span class="field-error">{{ form.nombre_mascota.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div class="input-container">
+        {{ form.tipo_consulta }} {% if form.tipo_consulta.errors %}
+        <span class="field-error">{{ form.tipo_consulta.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div class="input-row">
+        <div class="input-container">
+          {{ form.fecha }} {% if form.fecha.errors %}
+          <span class="field-error">{{ form.fecha.errors.0 }}</span>
+          {% endif %}
+        </div>
+        <div class="input-container">
+          {{ form.hora }} {% if form.hora.errors %}
+          <span class="field-error">{{ form.hora.errors.0 }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="input-container">
+        {{ form.observaciones }} {% if form.observaciones.errors %}
+        <span class="field-error">{{ form.observaciones.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="submit">Solicitar cita</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script>
+      const notyf = new Notyf({
+        duration: 3000,
+        position: { x: "center", y: "top" },
+      });
+    </script>
+  </body>
+</html>

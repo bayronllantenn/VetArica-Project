@@ -1,0 +1,83 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    align-items: center;
+    background-color: #f3faf7;
+    color: #2b3b38;
+    display: flex;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.auth-back-link {
+    align-items: center;
+    color: #5b6b68;
+    display: inline-flex;
+    font-size: .875rem;
+    font-weight: 500;
+    gap: .4rem;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    transition: color .15s ease, gap .15s ease;
+}
+
+.auth-back-link:hover {
+    color: #1c8266;
+    gap: .6rem;
+}
+
+.form {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    display: block;
+    margin: 2rem auto;
+    max-width: 440px;
+    padding: 2.5rem;
+    text-align: center;
+    width: 100%;
+}
+
+.sin-acceso-icon {
+    color: #e34848;
+    display: block;
+    font-size: 2.5rem;
+    margin-bottom: .75rem;
+}
+
+.form-title {
+    color: #9c2e2e;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.9rem;
+}
+
+.form-subtitle {
+    color: #5b6b68;
+    font-size: .95rem;
+    margin-bottom: 1.5rem;
+}
+
+.submit {
+    background-color: #d94141;
+    border: none;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    padding: .9rem 1.25rem;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color .15s ease;
+    width: 100%;
+}
+
+.submit:hover {
+    background-color: #9c2e2e;
+}

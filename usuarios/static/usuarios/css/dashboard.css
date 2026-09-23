@@ -1,0 +1,134 @@
+body {
+    background-color: #f3faf7;
+    color: #2b3b38;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+}
+
+.dash-content {
+    max-width: 960px;
+    padding-block: 2.5rem 4rem;
+}
+
+.dash-hero {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.dash-hero h1 {
+    color: #123c33;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.dash-subtitle {
+    color: #5b6b68;
+    margin: 0;
+}
+
+.dash-section-title {
+    color: #123c33;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.cita-table-wrap {
+    background-color: #fff;
+    border: 1px solid #dbe7e1;
+    border-radius: .75rem;
+    overflow-x: auto;
+}
+
+.cita-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.cita-table th {
+    background-color: #f3faf7;
+    border-bottom: 1px solid #dbe7e1;
+    color: #123c33;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    padding: .9rem 1.25rem;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.cita-table td {
+    border-bottom: 1px solid #eef4f1;
+    color: #3d4e4a;
+    font-size: .9rem;
+    padding: .9rem 1.25rem;
+    white-space: nowrap;
+}
+
+.cita-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.cita-table tbody tr:hover {
+    background-color: #f8fbfa;
+}
+
+.cita-mascota {
+    color: #123c33;
+    font-weight: 600;
+}
+
+.badge-estado,
+.badge-pago {
+    border-radius: 999px;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .7rem;
+}
+
+.badge-pendiente {
+    background-color: #fdf1d9;
+    color: #92650f;
+}
+
+.badge-confirmada,
+.badge-pagado {
+    background-color: #e7f5ef;
+    color: #145c46;
+}
+
+.badge-cancelada,
+.badge-rechazado,
+.badge-anulado {
+    background-color: #fbe7e7;
+    color: #9c2e2e;
+}
+
+.badge-finalizado {
+    background-color: #e2e8e5;
+    color: #3d4e4a;
+}
+
+.cita-empty {
+    background-color: #fff;
+    border: 1px dashed #dbe7e1;
+    border-radius: .75rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+.cita-empty i {
+    color: #9fb7ae;
+    font-size: 2rem;
+}
+
+.cita-empty p {
+    color: #5b6b68;
+    margin: .75rem 0 1.25rem;
+}

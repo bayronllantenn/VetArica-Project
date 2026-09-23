@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    align-items: center;
+    background-color: #f3faf7;
+    color: #2b3b38;
+    display: flex;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.auth-back-link {
+    align-items: center;
+    color: #5b6b68;
+    display: inline-flex;
+    font-size: .875rem;
+    font-weight: 500;
+    gap: .4rem;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    transition: color .15s ease, gap .15s ease;
+}
+
+.auth-back-link:hover {
+    color: #1c8266;
+    gap: .6rem;
+}
+
+.auth-logo {
+    display: block;
+    height: 60px;
+    margin: 0 auto 1rem;
+}
+
+.form {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    display: block;
+    margin: 2rem auto;
+    max-width: 440px;
+    padding: 2.5rem;
+    width: 100%;
+}
+
+.form-title {
+    color: #123c33;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 2rem;
+    margin-bottom: .5rem;
+    text-align: center;
+}
+
+.input-container {
+    position: relative;
+}
+
+.input-container input,
+.form button {
+    border: 1px solid #dbe7e1;
+    margin: 8px 0;
+    outline: none;
+}
+
+.input-container input {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: .9rem 1.4rem;
+    width: 100%;
+}
+
+.input-container input:focus {
+    border-color: #1c8266;
+}
+
+.submit {
+    background-color: #1c8266;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    margin-top: .5rem;
+    padding: .9rem 1.25rem;
+    text-transform: uppercase;
+    transition: background-color .15s ease;
+    width: 100%;
+}
+
+.submit:hover {
+    background-color: #123c33;
+}
+
+.signup-link {
+    color: #6B7280;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    text-align: center;
+}
+
+.signup-link a {
+    color: #1c8266;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.alert {
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    margin: 8px 0;
+    padding: 0.75rem 1rem;
+}
+
+.alert-error {
+    background-color: #fbe7e7;
+    color: #9c2e2e;
+}
+
+.alert-success {
+    background-color: #e7f5ef;
+    color: #145c46;
+}
