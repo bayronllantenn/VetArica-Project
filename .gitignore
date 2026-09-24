@@ -13,3 +13,4 @@ ENV/
 *.swo
 staticfiles/
 media/
+.env

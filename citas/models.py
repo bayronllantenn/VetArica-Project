@@ -87,3 +87,4 @@ class FichaMedica(models.Model):
 
     def __str__(self):
         return f"Ficha de {self.solicitud.nombre_mascota}"
+

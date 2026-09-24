@@ -46,3 +46,4 @@ def sin_acceso_view(request):
 def dashboard_usuario(request):
     citas = request.user.citas_solicitadas.all().order_by('-fecha_hora')
     return render(request, 'usuarios/dashboard.html', {'citas': citas})
+
