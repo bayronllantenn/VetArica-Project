@@ -1,6 +1,22 @@
 from django.conf import settings
 from django.db import models
 
+ESPECIES_MASCOTA = [
+    ('Perro', 'Perro'),
+    ('Gato', 'Gato'),
+    ('Conejo', 'Conejo'),
+]
+
+SEXOS_MASCOTA = [
+    ('Macho', 'Macho'),
+    ('Hembra', 'Hembra'),
+]
+
+UNIDADES_EDAD_MASCOTA = [
+    ('años', 'Años'),
+    ('meses', 'Meses'),
+]
+
 
 class TipoConsulta(models.Model):
     nombre = models.CharField(max_length=100)
@@ -48,15 +64,19 @@ class SolicitudCita(models.Model):
     telefono = models.CharField(max_length=9)
 
     nombre_mascota = models.CharField(max_length=100)
-
-    tipo_consulta = models.ForeignKey(TipoConsulta, on_delete=models.CASCADE, related_name='solicitudes')
-    veterinario = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+    especie_mascota = models.CharField(max_length=20, choices=ESPECIES_MASCOTA, blank=True)
+    raza_mascota = models.CharField(max_length=100, blank=True)
+    sexo_mascota = models.CharField(max_length=20, choices=SEXOS_MASCOTA, blank=True)
+    edad_valor_mascota = models.PositiveIntegerField(null=True, blank=True)
+    edad_unidad_mascota = models.CharField(max_length=10, choices=UNIDADES_EDAD_MASCOTA, blank=True, default='años')
+    mascota = models.ForeignKey(
+        'Mascota',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='citas_asignadas',
+        related_name='citas',
     )
+    tipo_consulta = models.ForeignKey(TipoConsulta, on_delete=models.CASCADE, related_name='solicitudes')
 
     # fecha para la cita
     fecha_hora = models.DateTimeField()
@@ -88,3 +108,21 @@ class FichaMedica(models.Model):
     def __str__(self):
         return f"Ficha de {self.solicitud.nombre_mascota}"
 
+
+class Mascota(models.Model):
+    dueno = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='mascotas')
+    nombre = models.CharField(max_length=100)
+    imagen = models.ImageField(upload_to='mascotas/', blank=True, null=True)
+    especie = models.CharField(max_length=20, choices=ESPECIES_MASCOTA)
+    raza = models.CharField(max_length=100, blank=True)
+    sexo = models.CharField(max_length=20, choices=SEXOS_MASCOTA, blank=False)
+    edad_valor = models.PositiveIntegerField()
+    edad_unidad = models.CharField(max_length=10, choices=UNIDADES_EDAD_MASCOTA, default='años')
+
+    def __str__(self):
+        return f"{self.nombre}"
+
+    def edad(self):
+        if self.edad_valor is not None:
+            return f"{self.edad_valor} {self.edad_unidad}"
+        return ""

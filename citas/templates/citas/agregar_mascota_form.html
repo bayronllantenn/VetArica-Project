@@ -1,0 +1,119 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agregar Mascota - Vet Arica</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+      rel="stylesheet"
+    />
+    <link href="{% static 'citas/css/agendar.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    <form class="form" method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      <a href="{% url 'dashboard' %}" class="auth-back-link">
+        <i class="bi bi-arrow-left"></i> Volver a mi cuenta
+      </a>
+      <p class="form-title">Agregar mascota</p>
+      <p class="form-subtitle">
+        Regístrala una vez y ya no tendrás que escribir sus datos cada vez que
+        agendes una cita.
+      </p>
+
+      <div class="input-container">
+        <input
+          type="text"
+          name="nombre"
+          id="id_nombre"
+          placeholder="Nombre de la mascota"
+          value="{{ form.nombre.value|default:'' }}"
+          maxlength="40"
+          required
+        />
+        {% if form.nombre.errors %}
+        <span class="field-error">{{ form.nombre.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div class="input-row">
+        <div class="input-container">
+          {{ form.especie }} {% if form.especie.errors %}
+          <span class="field-error">{{ form.especie.errors.0 }}</span>
+          {% endif %}
+        </div>
+        <div class="input-container">
+          {{ form.sexo }} {% if form.sexo.errors %}
+          <span class="field-error">{{ form.sexo.errors.0 }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="input-row">
+        <div class="input-container">
+          <input
+            type="number"
+            name="edad_valor"
+            id="id_edad_valor"
+            placeholder="Edad"
+            min="0"
+            max="480"
+            value="{{ form.edad_valor.value|default:'' }}"
+            required
+          />
+          {% if form.edad_valor.errors %}
+          <span class="field-error">{{ form.edad_valor.errors.0 }}</span>
+          {% endif %}
+        </div>
+        <div class="input-container">
+          {{ form.edad_unidad }} {% if form.edad_unidad.errors %}
+          <span class="field-error">{{ form.edad_unidad.errors.0 }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="input-container">
+        <input
+          type="text"
+          name="raza"
+          id="id_raza"
+          placeholder="Raza (opcional)"
+          value="{{ form.raza.value|default:'' }}"
+        />
+        {% if form.raza.errors %}
+        <span class="field-error">{{ form.raza.errors.0 }}</span>
+        {% endif %}
+      </div>
+      <div class="input-container">
+        <label for="id_imagen" class="field-label"
+          >Foto de la mascota (opcional)</label
+        >
+        <input type="file" name="imagen" id="id_imagen" accept="image/*" />
+        {% if form.imagen.errors %}
+        <span class="field-error">{{ form.imagen.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="submit">Guardar mascota</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script>
+      const notyf = new Notyf({
+        duration: 3000,
+        position: { x: "center", y: "top" },
+      });
+
+      {% for message in messages %}
+      notyf.{% if message.tags == 'success' %}success{% else %}error{% endif %}("{{ message|escapejs }}");
+      {% endfor %} {% for error in form.non_field_errors %}
+      notyf.error("{{ error|escapejs }}");
+      {% endfor %}
+    </script>
+  </body>
+</html>

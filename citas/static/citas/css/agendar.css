@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+.asteriskField {
+    display: none;
+}
+
 body {
     align-items: center;
     background-color: #f3faf7;
@@ -40,6 +44,16 @@ body {
     width: 100%;
 }
 
+.form-agendar {
+    max-width: 880px;
+}
+
+@media (max-width: 767.98px) {
+    .form-agendar .input-row {
+        flex-wrap: wrap;
+    }
+}
+
 .form-title {
     color: #123c33;
     font-size: 1.5rem;
@@ -56,14 +70,23 @@ body {
 }
 
 .section-title {
+    border-top: 1px solid #e6e8e7;
     color: #1c8266;
     font-weight: 700;
-    margin: 1.25rem 0 .5rem;
+    margin: 2rem 0 .75rem;
+    padding-top: 1.5rem;
+}
+
+.section-title:first-of-type {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .input-row {
     display: flex;
     gap: .75rem;
+    margin-bottom: .5rem;
 }
 
 .input-row .input-container {
@@ -122,7 +145,7 @@ body {
     font-size: 1rem;
     font-weight: 500;
     line-height: 1.5rem;
-    margin-top: .5rem;
+    margin-top: 1.5rem;
     padding: .9rem 1.25rem;
     text-align: center;
     text-decoration: none;
