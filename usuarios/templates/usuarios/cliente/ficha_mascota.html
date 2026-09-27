@@ -1,0 +1,121 @@
+{% extends 'inicio/base.html' %}
+{% load static %}
+
+{% block title %}{{ mascota.nombre }} - Vet Arica{% endblock %}
+
+{% block css %}
+<link
+  href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+  rel="stylesheet"
+/>
+<link href="{% static 'usuarios/css/dashboard.css' %}" rel="stylesheet" />
+<link href="{% static 'usuarios/css/ficha_mascota.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg bg-white sticky-top border-bottom">
+  <div class="container py-2">
+    <a
+      class="navbar-brand fs-4 d-flex align-items-center gap-2"
+      href="{% url 'home' %}"
+    >
+      <img
+        src="{% static 'inicio/img/logo.jpg' %}"
+        alt="Vet Arica"
+        height="36"
+        class="rounded"
+      />
+      Vet Arica
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navMenu"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'dashboard' %}">Mi Perfil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'dashboard' %}#mis-mascotas">Mis Mascotas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'historial_citas' %}">Mis Citas</a>
+        </li>
+        <li class="nav-item mt-2 mt-lg-0 d-flex align-items-center gap-2">
+          <a class="btn btn-teal px-3" href="{% url 'agendar' %}"
+            >Agendar Cita</a
+          >
+          <a href="{% url 'logout' %}" class="Btn">
+            <div class="sign">
+              <svg viewBox="0 0 512 512">
+                <path
+                  d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
+                ></path>
+              </svg>
+            </div>
+            <div class="text">Salir</div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="dash-shell">
+  <main class="dash-content ficha-content">
+    <section class="ficha-hero">
+      {% if mascota.imagen %}
+      <img
+        src="{{ mascota.imagen.url }}"
+        alt="{{ mascota.nombre }}"
+        class="ficha-hero-foto"
+      />
+      {% else %}
+      <span class="ficha-hero-foto ficha-hero-foto-vacia"></span>
+      {% endif %}
+      <div class="ficha-hero-info">
+        <div class="ficha-hero-nombre">
+          <h1>{{ mascota.nombre }}</h1>
+        </div>
+      </div>
+    </section>
+
+    <section class="ficha-datos">
+      <h2 class="dash-section-title">Datos Generales</h2>
+      <div class="ficha-datos-grid">
+        <p class="ficha-dato">Especie: {{ mascota.especie }}</p>
+        <p class="ficha-dato">Raza: {{ mascota.raza|default:"Sin raza" }}</p>
+        <p class="ficha-dato">Sexo: {{ mascota.sexo|default:"—" }}</p>
+        <p class="ficha-dato">Edad: {{ mascota.edad }}</p>
+      </div>
+    </section>
+  </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script>
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+
+  const notyf = new Notyf({
+    duration: 3000,
+    position: { x: "center", y: "top" },
+  });
+
+  {% for message in messages %}
+  notyf.{% if message.tags == 'success' %}success{% else %}error{% endif %}("{{ message|escapejs }}");
+  {% endfor %}
+</script>
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends 'inicio/base.html' %}
+{% load static %}
+
+{% block title %}Historial de Citas - Vet Arica{% endblock %}
+
+{% block css %}
+<link
+  href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+  rel="stylesheet"
+/>
+<link href="{% static 'usuarios/css/sidebar.css' %}" rel="stylesheet" />
+<link href="{% static 'usuarios/css/historial.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block sidebar %}
+{% include 'usuarios/cliente/sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<main class="page">
+  <section class="page-head">
+    <div>
+      <h1>Historial de Citas</h1>
+      <p class="subtitle">
+        Revisa los registros de todas tus atenciones anteriores y próximas
+        reservas.
+      </p>
+    </div>
+  </section>
+
+  <form method="get" class="filters" id="filtros">
+    <div class="filter">
+      <label for="f_periodo">Fecha</label>
+      <select name="periodo" id="f_periodo">
+        <option value="este_ano" {% if periodo == "este_ano" %}selected{% endif %}>
+          Este año ({% now "Y" %})
+        </option>
+        <option value="ano_pasado" {% if periodo == "ano_pasado" %}selected{% endif %}>
+          Año pasado
+        </option>
+        <option value="todo" {% if periodo == "todo" %}selected{% endif %}>
+          Todo el historial
+        </option>
+      </select>
+    </div>
+
+    <div class="filter">
+      <label for="f_mascota">Mascota</label>
+      <select name="mascota" id="f_mascota">
+        <option value="">Todas las mascotas</option>
+        {% for m in mascotas %}
+        <option value="{{ m.id }}" {% if mascota_sel == m.id|stringformat:"s" %}selected{% endif %}>
+          {{ m.nombre }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="filter">
+      <label for="f_estado">Estado</label>
+      <select name="estado" id="f_estado">
+        <option value="">Todos los estados</option>
+        {% for valor, etiqueta in estados %}
+        <option value="{{ valor }}" {% if estado_sel|lower == valor|lower %}selected{% endif %}>
+          {{ etiqueta }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <noscript><button type="submit" class="btn-primary">Filtrar</button></noscript>
+  </form>
+
+  <section class="table-card">
+    {% if page_obj.object_list %}
+    <div class="table-scroll">
+      <table class="citas-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Servicio</th>
+            <th>Mascota</th>
+            <th>Estado</th>
+            <th class="text-right">Valor</th>
+          </tr>
+        </thead>
+
+        {% for cita in page_obj %}
+        <tbody class="cita-group">
+          <tr>
+            <td class="nowrap">{{ cita.fecha_hora|date:"d M Y" }}</td>
+            <td class="nowrap">{{ cita.fecha_hora|date:"H:i" }}</td>
+            <td>{{ cita.tipo_consulta.nombre }}</td>
+            <td>{{ cita.mascota.nombre|default:cita.nombre_mascota }}</td>
+            <td>
+              <span class="badge badge--{{ cita.estado|slugify }}">
+                {{ cita.get_estado_display }}
+              </span>
+            </td>
+            <td class="text-right nowrap">
+              {% if cita.tipo_consulta.precio_base %}${{ cita.tipo_consulta.precio_base|floatformat:"0g" }}{% else %}—{% endif %}
+            </td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+    {% else %}
+    <div class="empty">
+      <i class="bi bi-calendar2-x"></i>
+      <p>No hay citas con estos filtros.</p>
+    </div>
+    {% endif %}
+  </section>
+
+  {% if page_obj.paginator.count %}
+  <footer class="pager">
+    <span class="muted">
+      Mostrando {{ page_obj.start_index }}-{{ page_obj.end_index }} de
+      {{ page_obj.paginator.count }} atenciones
+    </span>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <div class="pager-links">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}&{{ querystring }}" class="pager-btn">Anterior</a>
+      {% else %}
+      <span class="pager-btn disabled">Anterior</span>
+      {% endif %}
+
+      {% for n in page_obj.paginator.page_range %}
+      <a href="?page={{ n }}&{{ querystring }}"
+         class="pager-num {% if n == page_obj.number %}current{% endif %}">{{ n }}</a>
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}&{{ querystring }}" class="pager-btn">Siguiente</a>
+      {% else %}
+      <span class="pager-btn disabled">Siguiente</span>
+      {% endif %}
+    </div>
+    {% endif %}
+  </footer>
+  {% endif %}
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script>
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+
+  document.querySelectorAll("#filtros select").forEach((s) =>
+    s.addEventListener("change", () => s.form.submit())
+  );
+
+  const notyf = new Notyf({
+    duration: 3000,
+    position: { x: "center", y: "top" },
+  });
+  {% for message in messages %}
+  notyf.{% if message.tags == 'success' %}success{% else %}error{% endif %}("{{ message|escapejs }}");
+  {% endfor %}
+
+  // abre y cierra el sidebar en pantalla chica
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  const sidebarEl = document.getElementById("sidebar");
+  const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+  if (sidebarToggle && sidebarEl && sidebarBackdrop) {
+    sidebarToggle.addEventListener("click", function () {
+      sidebarEl.classList.add("sidebar-open");
+      sidebarBackdrop.classList.add("show");
+    });
+    sidebarBackdrop.addEventListener("click", function () {
+      sidebarEl.classList.remove("sidebar-open");
+      sidebarBackdrop.classList.remove("show");
+    });
+  }
+</script>
+{% endblock %}

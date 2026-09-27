@@ -1,0 +1,76 @@
+{% extends "inicio/base.html" %}
+{% load static crispy_forms_tags %}
+{% block content %}
+<link href="{% static 'usuarios/css/sidebar.css' %}" rel="stylesheet" />
+<link href="{% static 'usuarios/css/configuracion.css' %}" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" rel="stylesheet" />
+<div class="dash-shell">
+  {% include "usuarios/cliente/sidebar.html" %}
+  <main class="dash-content">
+    <div class="config-header">
+      <h1>Configuración</h1>
+      <p>Actualiza tus datos personales y tu foto de perfil.</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <section class="config-card">
+        <h2>Foto de perfil</h2>
+        <p class="sub">Se mostrará en tu portal de cliente.</p>
+
+        <div class="foto-row">
+          {% if user.foto %}
+            <img class="avatar" src="{{ user.foto.url }}" alt="Foto de perfil">
+          {% else %}
+            <div class="avatar avatar-iniciales">
+              {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+            </div>
+          {% endif %}
+
+          <div class="campo campo-foto {% if form.foto.errors %}con-error{% endif %}">
+            <label for="{{ form.foto.id_for_label }}">Elegir foto de perfil</label>
+            <div class="selector-foto">{{ form.foto }}</div>
+            <small>JPG o PNG, máximo 2 MB. La foto se verá después de presionar "Guardar cambios".</small>
+            {% for error in form.foto.errors %}<span class="error">{{ error }}</span>{% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <section class="config-card">
+        <h2>Datos personales</h2>
+        <p class="sub">Estos son los datos que ingresaste al crear tu cuenta.</p>
+
+        <div class="grid-2">
+          <div>{{ form.first_name|as_crispy_field }}</div>
+          <div>{{ form.last_name|as_crispy_field }}</div>
+
+          <div class="mb-3">
+            <label class="form-label">RUT</label>
+            <input type="text" class="form-control" value="{{ user.rut }}" disabled>
+            <div class="form-text">El RUT no se puede modificar.</div>
+          </div>
+
+          <div>{{ form.telefono|as_crispy_field }}</div>
+          <div class="campo-full">{{ form.email|as_crispy_field }}</div>
+        </div>
+
+        <div class="acciones">
+          <a href="{% url 'dashboard' %}" class="btn-cancelar">Cancelar</a>
+          <button type="submit" class="btn-principal">Guardar cambios</button>
+        </div>
+      </section>
+    </form>
+  </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script>
+  const notyf = new Notyf({ duration: 3000, position: { x: "center", y: "top" } });
+  {% for message in messages %}
+  notyf.{% if message.tags == 'success' %}success{% else %}error{% endif %}("{{ message|escapejs }}");
+  {% endfor %}
+</script>
+{% endblock %}
