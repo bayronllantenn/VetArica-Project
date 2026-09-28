@@ -175,3 +175,7 @@ header,
   border-color: #c0392b;
   background: #fdf3f2;
 }
+
+.asteriskField {
+  display: none;
+}

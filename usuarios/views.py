@@ -5,13 +5,20 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
-from citas.models import Mascota
+from citas.models import Mascota, SolicitudCita
 from .forms import LoginForm, RegisterForm, ConfiguracionForm
+
+
+def redirigir_segun_rol(usuario):
+    if usuario.rol == 'veterinaria':
+        return redirect('dashboard_doctora')
+    return redirect('dashboard')
+
 
 @never_cache
 def registro_view(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirigir_segun_rol(request.user)
 
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -27,7 +34,7 @@ def registro_view(request):
 @never_cache
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirigir_segun_rol(request.user)
 
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
@@ -35,7 +42,7 @@ def login_view(request):
             usuario = form.get_user()
             login(request, usuario)
             messages.success(request, f'Bienvenido, {usuario.first_name} {usuario.last_name}.')
-            return redirect('dashboard')
+            return redirigir_segun_rol(usuario)
         messages.error(request, 'Correo electrónico o contraseña incorrectos.')
     else:
         form = LoginForm()
@@ -58,31 +65,14 @@ def dashboard_usuario(request):
     ahora = timezone.now()
     citas = request.user.citas_solicitadas.all().order_by('-fecha_hora')
     mascotas = request.user.mascotas.all()
-    nombres = [m.nombre for m in mascotas]
-    if len(nombres) > 1:
-        nombres_mascotas = ", ".join(nombres[:-1]) + " y " + nombres[-1]
-    else:
-        nombres_mascotas = "".join(nombres)
 
-    proxima_cita = (
-        request.user.citas_solicitadas
-        .filter(fecha_hora__gte=ahora)
-        .exclude(estado__iexact='cancelada')
-        .order_by('fecha_hora')
-        .first()
-    )
+    proxima_cita = request.user.citas_solicitadas.filter(fecha_hora__gte=ahora).exclude(estado__iexact='cancelada').order_by('fecha_hora').first()
 
-    citas_anio = (
-        request.user.citas_solicitadas
-        .filter(fecha_hora__year=ahora.year, fecha_hora__lt=ahora)
-        .exclude(estado__iexact='cancelada')
-        .count()
-    )
+    citas_anio = request.user.citas_solicitadas.filter(fecha_hora__year=ahora.year, fecha_hora__lt=ahora).exclude(estado__iexact='cancelada').count()
 
     context = {
         'citas': citas,
         'mascotas': mascotas,
-        'nombres_mascotas': nombres_mascotas,
         'proxima_cita': proxima_cita,
         'citas_anio': citas_anio,
     }
@@ -91,14 +81,15 @@ def dashboard_usuario(request):
 
 @never_cache
 @login_required(login_url='sin_acceso')
+def dashboard_doctora(request):
+    return render(request, 'usuarios/doctora/dashboard.html')
+
+
+@never_cache
+@login_required(login_url='sin_acceso')
 def historial_citas(request):
     anio_actual = timezone.now().year
-    citas = (
-        request.user.citas_solicitadas
-        .select_related('mascota')
-        .order_by('-fecha_hora')
-    )
-
+    citas = request.user.citas_solicitadas.select_related('mascota').order_by('-fecha_hora')
 
     periodo = request.GET.get('periodo', 'este_ano')
     mascota_sel = request.GET.get('mascota', '')
@@ -114,16 +105,9 @@ def historial_citas(request):
     if estado_sel:
         citas = citas.filter(estado__iexact=estado_sel)
 
-    campo_estado = request.user.citas_solicitadas.model._meta.get_field('estado')
-    estados = campo_estado.choices or [
-        (e, e.capitalize())
-        for e in request.user.citas_solicitadas.values_list('estado', flat=True).distinct()
-    ]
-
+    estados = SolicitudCita.ESTADOS
 
     page_obj = Paginator(citas, 8).get_page(request.GET.get('page'))
-    params = request.GET.copy()
-    params.pop('page', None)
 
     context = {
         'page_obj': page_obj,
@@ -132,7 +116,6 @@ def historial_citas(request):
         'periodo': periodo,
         'mascota_sel': mascota_sel,
         'estado_sel': estado_sel,
-        'querystring': params.urlencode(),
     }
     return render(request, 'usuarios/cliente/historial_citas_list.html', context)
 

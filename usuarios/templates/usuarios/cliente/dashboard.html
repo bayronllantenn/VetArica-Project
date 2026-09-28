@@ -6,7 +6,7 @@ Vet Arica{% endblock %} {% block css %}
 />
 <link href="{% static 'usuarios/css/sidebar.css' %}" rel="stylesheet" />
 <link href="{% static 'usuarios/css/dashboard.css' %}" rel="stylesheet" />
-{% endblock %} {% block navbar %}{% endblock %} {% block sidebar %}
+{% endblock %} {% block topbar %}{% endblock %} {% block navbar %}{% endblock %} {% block sidebar %}
 {% include 'usuarios/cliente/sidebar.html' %}
 {% endblock %} {% block content %}
 <div class="dash-shell">
@@ -24,9 +24,6 @@ Vet Arica{% endblock %} {% block css %}
         <div class="stat-body">
           <span class="stat-label">Mascotas Registradas</span>
           <strong class="stat-number">{{ mascotas|length }}</strong>
-          <span class="stat-caption"
-            >{{ nombres_mascotas|default:"Aún sin mascotas" }}</span
-          >
         </div>
         <div class="stat-icon-box stat-icon-box-gris">
           <i class="bi bi-clipboard2-pulse"></i>
@@ -42,7 +39,7 @@ Vet Arica{% endblock %} {% block css %}
           >
           <span class="stat-caption">{{ proxima_cita.nombre_mascota }}</span>
           {% else %}
-          <span class="stat-caption">Sin citas próximas</span>
+          <span class="stat-caption stat-caption-oscuro">Sin citas próximas</span>
           {% endif %}
         </div>
         <div class="stat-icon-box stat-icon-box-verde">
@@ -153,13 +150,7 @@ Vet Arica{% endblock %} {% block css %}
 {% endblock %} {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 <script>
-  window.addEventListener("pageshow", function (event) {
-    if (event.persisted) {
-      window.location.reload();
-    }
-  });
-
-  const notyf = new Notyf({
+const notyf = new Notyf({
     duration: 3000,
     position: { x: "center", y: "top" },
   });

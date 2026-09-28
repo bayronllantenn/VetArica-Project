@@ -9,8 +9,11 @@
   rel="stylesheet"
 />
 <link href="{% static 'usuarios/css/sidebar.css' %}" rel="stylesheet" />
+<link href="{% static 'usuarios/css/dashboard.css' %}" rel="stylesheet" />
 <link href="{% static 'usuarios/css/historial.css' %}" rel="stylesheet" />
 {% endblock %}
+
+{% block topbar %}{% endblock %}
 
 {% block navbar %}{% endblock %}
 
@@ -19,7 +22,8 @@
 {% endblock %}
 
 {% block content %}
-<main class="page">
+<div class="dash-shell">
+  <main class="dash-content">
   <section class="page-head">
     <div>
       <h1>Historial de Citas</h1>
@@ -119,45 +123,27 @@
   {% if page_obj.paginator.count %}
   <footer class="pager">
     <span class="muted">
-      Mostrando {{ page_obj.start_index }}-{{ page_obj.end_index }} de
-      {{ page_obj.paginator.count }} atenciones
+      Viendo {{ page_obj.number }} de {{ page_obj.paginator.count }} atenciones totales
     </span>
 
-    {% if page_obj.paginator.num_pages > 1 %}
     <div class="pager-links">
       {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}&{{ querystring }}" class="pager-btn">Anterior</a>
-      {% else %}
-      <span class="pager-btn disabled">Anterior</span>
+      <a href="{% querystring page=page_obj.previous_page_number %}" class="pager-btn">Anterior</a>
       {% endif %}
-
-      {% for n in page_obj.paginator.page_range %}
-      <a href="?page={{ n }}&{{ querystring }}"
-         class="pager-num {% if n == page_obj.number %}current{% endif %}">{{ n }}</a>
-      {% endfor %}
-
       {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}&{{ querystring }}" class="pager-btn">Siguiente</a>
-      {% else %}
-      <span class="pager-btn disabled">Siguiente</span>
+      <a href="{% querystring page=page_obj.next_page_number %}" class="pager-btn">Siguiente</a>
       {% endif %}
     </div>
-    {% endif %}
   </footer>
   {% endif %}
-</main>
+  </main>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 <script>
-  window.addEventListener("pageshow", function (event) {
-    if (event.persisted) {
-      window.location.reload();
-    }
-  });
-
-  document.querySelectorAll("#filtros select").forEach((s) =>
+document.querySelectorAll("#filtros select").forEach((s) =>
     s.addEventListener("change", () => s.form.submit())
   );
 
@@ -168,8 +154,6 @@
   {% for message in messages %}
   notyf.{% if message.tags == 'success' %}success{% else %}error{% endif %}("{{ message|escapejs }}");
   {% endfor %}
-
-  // abre y cierra el sidebar en pantalla chica
   const sidebarToggle = document.getElementById("sidebarToggle");
   const sidebarEl = document.getElementById("sidebar");
   const sidebarBackdrop = document.getElementById("sidebarBackdrop");

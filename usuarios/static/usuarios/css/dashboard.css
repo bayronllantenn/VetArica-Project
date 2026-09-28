@@ -1,5 +1,5 @@
 body {
-  background-color: #ece9e4;
+  background-color: #f8f9fa;
   color: #1f2d2b;
   font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   min-height: 100vh;
@@ -10,7 +10,7 @@ html {
 }
 
 .dash-shell {
-  background: #fbfaf8;
+  background: #f8f9fa;
   margin: 0 16px 16px;
   border-radius: 0 0 16px 16px;
   min-height: calc(100vh - 100px);
@@ -95,6 +95,10 @@ html {
   color: #5b6b68;
   font-size: 0.78rem;
   margin-top: 0.45rem;
+}
+
+.stat-caption-oscuro {
+  color: #000;
 }
 
 .stat-icon-box {

@@ -111,7 +111,7 @@ body {
 }
 
 .submit {
-    background-color: #1c8266;
+    background-color: #22c55e;
     border-radius: 0.5rem;
     color: #ffffff;
     display: block;
@@ -126,7 +126,7 @@ body {
 }
 
 .submit:hover {
-    background-color: #123c33;
+    background-color: #16a34a;
 }
 
 .signup-link {

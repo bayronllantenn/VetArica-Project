@@ -1,0 +1,20 @@
+.enviado-icono {
+    color: #000;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.enviado-icono svg {
+    width: 40px;
+    height: 40px;
+}
+
+.enviado-form .form-title,
+.enviado-form .form-subtitle {
+    text-align: left;
+}
+
+.enviado-form .submit {
+    text-align: center;
+    text-decoration: none;
+}

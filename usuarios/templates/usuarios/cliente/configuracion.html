@@ -1,11 +1,19 @@
 {% extends "inicio/base.html" %}
 {% load static crispy_forms_tags %}
-{% block content %}
+
+{% block css %}
 <link href="{% static 'usuarios/css/sidebar.css' %}" rel="stylesheet" />
+<link href="{% static 'usuarios/css/dashboard.css' %}" rel="stylesheet" />
 <link href="{% static 'usuarios/css/configuracion.css' %}" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" rel="stylesheet" />
+{% endblock %}
+{% block topbar %}{% endblock %}
+{% block navbar %}{% endblock %}
+{% block sidebar %}
+{% include "usuarios/cliente/sidebar.html" %}
+{% endblock %}
+{% block content %}
 <div class="dash-shell">
-  {% include "usuarios/cliente/sidebar.html" %}
   <main class="dash-content">
     <div class="config-header">
       <h1>Configuración</h1>
@@ -31,7 +39,7 @@
           <div class="campo campo-foto {% if form.foto.errors %}con-error{% endif %}">
             <label for="{{ form.foto.id_for_label }}">Elegir foto de perfil</label>
             <div class="selector-foto">{{ form.foto }}</div>
-            <small>JPG o PNG, máximo 2 MB. La foto se verá después de presionar "Guardar cambios".</small>
+            <small>Imagen formato .PNG o .JPG maximo 2MB luego presionar en "Guardar cambios".</small>
             {% for error in form.foto.errors %}<span class="error">{{ error }}</span>{% endfor %}
           </div>
         </div>

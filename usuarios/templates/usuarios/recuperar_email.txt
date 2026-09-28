@@ -1,0 +1,8 @@
+Hola {{ user.first_name }},
+
+Recibimos una solicitud para restablecer tu contraseña en Vet Arica.
+
+Entra a este link para crear una nueva contraseña:
+{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
+
+Si tú no pediste esto, ignora este correo, tu contraseña sigue igual.

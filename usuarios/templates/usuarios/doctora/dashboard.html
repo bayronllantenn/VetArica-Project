@@ -1,0 +1,16 @@
+{% extends 'inicio/base.html' %} {% load static %} {% block title %}Panel veterinaria -
+Vet Arica{% endblock %} {% block css %}
+<link href="{% static 'usuarios/css/sidebar.css' %}" rel="stylesheet" />
+<link href="{% static 'usuarios/css/dashboard.css' %}" rel="stylesheet" />
+{% endblock %} {% block topbar %}{% endblock %} {% block navbar %}{% endblock %} {% block sidebar %}
+{% include 'usuarios/doctora/sidebar.html' %}
+{% endblock %} {% block content %}
+<div class="dash-shell">
+  <main class="dash-content">
+    <section class="dash-hero">
+      <h1>¡Hola {{ user.first_name }}, bienvenida de vuelta!</h1>
+      <p class="dash-subtitle">Aquí vas a ver tu resumen del día.</p>
+    </section>
+  </main>
+</div>
+{% endblock %}

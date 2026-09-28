@@ -3,7 +3,7 @@
   <button id="sidebarToggle" class="sidebar-toggle-btn" type="button" aria-label="Abrir menu">
     <i class="bi bi-list"></i>
   </button>
-  <a href="{% url 'dashboard' %}" class="mobile-topbar-brand">
+  <a href="{% url 'dashboard_doctora' %}" class="mobile-topbar-brand">
     <img src="{% static 'inicio/img/logo.jpg' %}" alt="Vet Arica" height="28" class="rounded" />
     Vet Arica
   </a>
@@ -16,31 +16,17 @@
     <img src="{% static 'inicio/img/logo.jpg' %}" alt="Vet Arica" height="36" class="rounded" />
     <div>
       <strong>Vet Arica</strong>
-      <span>Portal Cliente</span>
+      <span>Portal Veterinaria</span>
     </div>
   </div>
 
-  <a href="{% url 'agendar' %}" class="btn btn-teal sidebar-cta">Agendar Cita</a>
-
   <nav class="sidebar-nav">
-    <a href="{% url 'dashboard' %}" class="sidebar-link">
+    <a href="{% url 'dashboard_doctora' %}" class="sidebar-link">
       <i class="bi bi-grid"></i> Inicio
-    </a>
-    <a href="{% url 'dashboard' %}#mis-mascotas" class="sidebar-link">
-      <i class="bi bi-heart"></i> Mis Mascotas
-    </a>
-    <a href="{% url 'dashboard' %}#mis-citas" class="sidebar-link">
-      <i class="bi bi-calendar-event"></i> Citas Agendadas
-    </a>
-    <a href="{% url 'historial_citas' %}" class="sidebar-link">
-      <i class="bi bi-file-earmark-text"></i> Historial de Citas
     </a>
   </nav>
 
   <div class="sidebar-footer">
-   <a href="{% url 'configuracion' %}" class="sidebar-link">
-  <i class="bi bi-gear"></i> Configuración
-</a>
     <a href="{% url 'logout' %}" class="sidebar-link">
       <i class="bi bi-box-arrow-right"></i> Cerrar sesión
     </a>

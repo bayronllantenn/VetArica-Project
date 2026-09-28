@@ -37,6 +37,10 @@
       {{ form.username|as_crispy_field }}
       {{ form.password|as_crispy_field }}
 
+      <p class="signup-link">
+        <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+      </p>
+
       <button type="submit" class="submit">Iniciar sesión</button>
 
       <p class="signup-link">
