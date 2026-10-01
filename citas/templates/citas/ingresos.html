@@ -1,0 +1,93 @@
+{% extends 'inicio/base.html' %} {% load static %} {% block title %}Ingresos -
+Vet Arica{% endblock %} {% block css %}
+<link href="{% static 'usuarios/css/sidebar.css' %}" rel="stylesheet" />
+<link href="{% static 'usuarios/css/dashboard.css' %}" rel="stylesheet" />
+{% endblock %} {% block topbar %}{% endblock %} {% block navbar %}{% endblock %} {% block sidebar %}
+{% include 'usuarios/doctora/sidebar.html' %}
+{% endblock %} {% block content %}
+<div class="dash-shell">
+  <main class="dash-content">
+    <section class="dash-hero">
+      <h1>Ingresos</h1>
+      <p class="dash-subtitle">Resumen de lo cobrado en citas pagadas.</p>
+    </section>
+
+    <section class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-body">
+          <span class="stat-label">Este mes</span>
+          <strong class="stat-number">${{ ingresos_mes }}</strong>
+        </div>
+        <div class="stat-icon-box stat-icon-box-verde">
+          <i class="bi bi-cash-coin"></i>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-body">
+          <span class="stat-label">Este año</span>
+          <strong class="stat-number">${{ ingresos_anio }}</strong>
+        </div>
+        <div class="stat-icon-box stat-icon-box-azul">
+          <i class="bi bi-graph-up"></i>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-body">
+          <span class="stat-label">Total histórico</span>
+          <strong class="stat-number">${{ ingresos_totales }}</strong>
+        </div>
+        <div class="stat-icon-box stat-icon-box-gris">
+          <i class="bi bi-wallet2"></i>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="dash-section-title">Citas pagadas</h2>
+
+    {% if citas_pagadas %}
+    <div class="cita-list">
+      {% for cita in citas_pagadas %}
+      <article class="cita-item">
+        <div class="cita-fecha-texto">{{ cita.fecha_pago|date:"d M, H:i" }}</div>
+
+        <div class="cita-info">
+          <h3>{{ cita.tipo_consulta.nombre }}</h3>
+          <p>
+            {{ cita.nombre }} {{ cita.apellido }} ·
+            <strong>{{ cita.nombre_mascota }}</strong>
+          </p>
+        </div>
+
+        <div class="cita-meta">
+          <span class="cita-estado-label">${{ cita.monto_pagado }}</span>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="cita-empty">
+      <i class="bi bi-cash"></i>
+      <p>Todavía no hay citas pagadas.</p>
+    </div>
+    {% endif %}
+  </main>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  const sidebarEl = document.getElementById("sidebar");
+  const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+  if (sidebarToggle && sidebarEl && sidebarBackdrop) {
+    sidebarToggle.addEventListener("click", function () {
+      sidebarEl.classList.add("sidebar-open");
+      sidebarBackdrop.classList.add("show");
+    });
+    sidebarBackdrop.addEventListener("click", function () {
+      sidebarEl.classList.remove("sidebar-open");
+      sidebarBackdrop.classList.remove("show");
+    });
+  }
+</script>
+{% endblock %}
