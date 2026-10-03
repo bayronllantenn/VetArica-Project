@@ -2,8 +2,8 @@ from django.conf import settings
 from django.db import models
 
 ESPECIES_MASCOTA = [
-    ('Perro', 'Perro'),
-    ('Gato', 'Gato'),
+    ('Canino', 'Canino'),
+    ('Felino', 'Felino'),
     ('Conejo', 'Conejo'),
 ]
 

@@ -18,47 +18,86 @@
       href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
       rel="stylesheet"
     />
-    <link href="{% static 'citas/css/agendar.css' %}" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back_ios"
+      rel="stylesheet"
+    />
+    <link href="{% static 'citas/css/mascota_form.css' %}" rel="stylesheet" />
   </head>
-  <body>
-    <form class="form" method="post" enctype="multipart/form-data" novalidate>
-      {% csrf_token %}
-      <a href="{% url 'dashboard' %}" class="auth-back-link">
-        <i class="bi bi-arrow-left"></i> Volver a mi cuenta
-      </a>
-      <p class="form-title">Agregar mascota</p>
-      <p class="form-subtitle">
-        Regístrala una vez y ya no tendrás que escribir sus datos cada vez que
-        agendes una cita.
-      </p>
+  <body class="mascota-form-body">
+    <div class="mascota-card-wrapper">
+      <form class="mascota-form-card" method="post" enctype="multipart/form-data" novalidate id="mascotaForm">
+        {% csrf_token %}
+        
+        <div class="form-top-nav">
+          <a href="{% url 'dashboard' %}" class="btn-back-pill">
+            <span class="material-symbols-outlined">arrow_back_ios</span> Volver a mi cuenta
+          </a>
+        </div>
 
-      {{ form.nombre|as_crispy_field }}
+        <div class="form-header">
+          <h1>Agregar mascota</h1>
+          <p>
+            Regístrala una vez y ya no tendrás que escribir sus datos cada vez que agendes una cita.
+          </p>
+        </div>
 
-      <div class="row">
-        <div class="col-md-6">{{ form.especie|as_crispy_field }}</div>
-        <div class="col-md-6">{{ form.sexo|as_crispy_field }}</div>
-      </div>
+        <div class="avatar-upload-section">
+          <label class="avatar-preview-box" for="{{ form.imagen.id_for_label }}" title="Haz clic para seleccionar foto">
+            <img id="avatarImage" src="" alt="Vista previa" class="avatar-img-preview d-none" />
+            <div class="avatar-placeholder" id="avatarPlaceholder">
+              <i class="bi bi-camera"></i>
+              <span>FOTO</span>
+            </div>
+            <div class="avatar-badge-edit">
+              <i class="bi bi-plus-lg"></i>
+            </div>
+          </label>
+          <span class="avatar-upload-hint">Foto de perfil (opcional • máx. 2MB)</span>
+        </div>
 
-      <div class="row">
-        <div class="col-md-6">{{ form.edad_valor|as_crispy_field }}</div>
-        <div class="col-md-6">{{ form.edad_unidad|as_crispy_field }}</div>
-      </div>
+        <div class="crispy-fields-wrap">
+          {{ form.nombre|as_crispy_field }}
 
-      {{ form.raza|as_crispy_field }}
-      {{ form.imagen|as_crispy_field }}
+          <div class="row g-3">
+            <div class="col-md-6">{{ form.especie|as_crispy_field }}</div>
+            <div class="col-md-6">{{ form.sexo|as_crispy_field }}</div>
+          </div>
 
-      <button type="submit" class="submit">Guardar mascota</button>
-    </form>
+          <div class="row g-3">
+            <div class="col-md-6">{{ form.edad_valor|as_crispy_field }}</div>
+            <div class="col-md-6">{{ form.edad_unidad|as_crispy_field }}</div>
+          </div>
+
+          {{ form.raza|as_crispy_field }}
+
+          <div class="d-none">
+            {{ form.imagen|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-submit-mascota">
+            Guardar mascota
+          </button>
+          <a href="{% url 'dashboard' %}" class="btn-cancel-mascota">
+            Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script>
       const notyf = new Notyf({
-        duration: 3000,
+        duration: 3500,
         position: { x: "center", y: "top" },
       });
 
       {% for message in messages %}
       notyf.{% if message.tags == 'success' %}success{% else %}error{% endif %}("{{ message|escapejs }}");
-      {% endfor %} {% for error in form.non_field_errors %}
+      {% endfor %} 
+      {% for error in form.non_field_errors %}
       notyf.error("{{ error|escapejs }}");
       {% endfor %}
     </script>

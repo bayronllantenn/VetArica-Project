@@ -2,6 +2,8 @@
 Vet Arica{% endblock %} {% block css %}
 <link href="{% static 'usuarios/css/sidebar.css' %}" rel="stylesheet" />
 <link href="{% static 'usuarios/css/dashboard.css' %}" rel="stylesheet" />
+<link href="{% static 'citas/css/ingresos.css' %}" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" rel="stylesheet" />
 {% endblock %} {% block topbar %}{% endblock %} {% block navbar %}{% endblock %} {% block sidebar %}
 {% include 'usuarios/doctora/sidebar.html' %}
 {% endblock %} {% block content %}
@@ -15,31 +17,22 @@ Vet Arica{% endblock %} {% block css %}
     <section class="stat-grid">
       <div class="stat-card">
         <div class="stat-body">
-          <span class="stat-label">Este mes</span>
+          <span class="stat-label stat-label-upper">Este mes</span>
           <strong class="stat-number">${{ ingresos_mes }}</strong>
         </div>
-        <div class="stat-icon-box stat-icon-box-verde">
-          <i class="bi bi-cash-coin"></i>
-        </div>
       </div>
 
       <div class="stat-card">
         <div class="stat-body">
-          <span class="stat-label">Este año</span>
+          <span class="stat-label stat-label-upper">Este año</span>
           <strong class="stat-number">${{ ingresos_anio }}</strong>
         </div>
-        <div class="stat-icon-box stat-icon-box-azul">
-          <i class="bi bi-graph-up"></i>
-        </div>
       </div>
 
       <div class="stat-card">
         <div class="stat-body">
-          <span class="stat-label">Total histórico</span>
+          <span class="stat-label stat-label-upper">Total histórico</span>
           <strong class="stat-number">${{ ingresos_totales }}</strong>
-        </div>
-        <div class="stat-icon-box stat-icon-box-gris">
-          <i class="bi bi-wallet2"></i>
         </div>
       </div>
     </section>
@@ -54,10 +47,10 @@ Vet Arica{% endblock %} {% block css %}
 
         <div class="cita-info">
           <h3>{{ cita.tipo_consulta.nombre }}</h3>
-          <p>
-            {{ cita.nombre }} {{ cita.apellido }} ·
-            <strong>{{ cita.nombre_mascota }}</strong>
-          </p>
+          <p><strong>Nombre dueño:</strong> {{ cita.nombre }} {{ cita.apellido }}</p>
+          <p><strong>Teléfono:</strong> {{ cita.telefono }}</p>
+          <p><strong>Correo:</strong> {{ cita.email }}</p>
+          <p><strong>Nombre mascota:</strong> {{ cita.nombre_mascota }}</p>
         </div>
 
         <div class="cita-meta">
@@ -68,7 +61,6 @@ Vet Arica{% endblock %} {% block css %}
     </div>
     {% else %}
     <div class="cita-empty">
-      <i class="bi bi-cash"></i>
       <p>Todavía no hay citas pagadas.</p>
     </div>
     {% endif %}
@@ -89,5 +81,16 @@ Vet Arica{% endblock %} {% block css %}
       sidebarBackdrop.classList.remove("show");
     });
   }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script>
+  const notyf = new Notyf({
+    duration: 3000,
+    position: { x: "center", y: "top" },
+  });
+
+  {% for message in messages %}
+  notyf.{% if message.tags == 'success' %}success{% else %}error{% endif %}("{{ message|escapejs }}");
+  {% endfor %}
 </script>
 {% endblock %}

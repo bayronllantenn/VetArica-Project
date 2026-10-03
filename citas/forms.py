@@ -7,6 +7,7 @@ from .models import (
     ESPECIES_MASCOTA,
     SEXOS_MASCOTA,
     UNIDADES_EDAD_MASCOTA,
+    FichaMedica,
     Mascota,
     SolicitudCita,
     TipoConsulta,
@@ -300,3 +301,16 @@ class MascotaForm(forms.ModelForm):
                 self.add_error('edad_valor', error)
 
         return cleaned_data
+
+
+class FichaMedicaForm(forms.ModelForm):
+    class Meta:
+        model = FichaMedica
+        fields = ['peso', 'motivo_consulta', 'diagnostico', 'tratamiento', 'observaciones']
+        widgets = {
+            'peso': forms.NumberInput(attrs={'placeholder': 'Peso en kg', 'step': '0.01', 'min': 0}),
+            'motivo_consulta': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Motivo de la consulta'}),
+            'diagnostico': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Diagnóstico'}),
+            'tratamiento': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Tratamiento indicado'}),
+            'observaciones': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Vacunas, alergias, cirugías previas u otras observaciones (opcional)'}),
+        }

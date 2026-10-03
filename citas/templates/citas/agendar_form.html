@@ -15,83 +15,100 @@
       rel="stylesheet"
     />
     <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back_ios"
+      rel="stylesheet"
+    />
+    <link
       href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
       rel="stylesheet"
     />
+    <link href="{% static 'citas/css/mascota_form.css' %}" rel="stylesheet" />
     <link href="{% static 'citas/css/agendar.css' %}" rel="stylesheet" />
   </head>
-  <body>
-    <form class="form form-agendar" method="post" novalidate>
-      {% csrf_token %}
-      <a href="{% url 'home' %}" class="auth-back-link">
-        Volver al inicio
-      </a>
-      <p class="form-title">Agendar cita</p>
-      <p class="form-subtitle">
-        Completa tus datos y nos contactaremos contigo para confirmar la hora.
-        No necesitas crear una cuenta.
-      </p>
+  <body class="mascota-form-body">
+    <div class="mascota-card-wrapper agendar-card-wrapper">
+      <form class="mascota-form-card" method="post" novalidate>
+        {% csrf_token %}
 
-      {% if form.non_field_errors %}
-      <div class="alert alert-error">
-        {% for error in form.non_field_errors %}
-        <div>{{ error }}</div>
-        {% endfor %}
-      </div>
-      {% endif %}
+        <div class="form-top-nav">
+          <a href="{% if request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% url 'home' %}{% endif %}" onclick="if (window.history.length > 1) { event.preventDefault(); window.history.back(); }" class="btn-back-pill">
+            <span class="material-symbols-outlined">arrow_back_ios</span> Volver atrás
+          </a>
+        </div>
 
-      {% if not cuenta_completa %}
-      <p class="section-title">Datos de contacto</p>
+        <div class="form-header">
+          <h1>Agendar cita</h1>
+          <p>
+            Completa tus datos y nos contactaremos contigo para confirmar la hora.
+            No necesitas crear una cuenta.
+          </p>
+        </div>
 
-      <div class="row">
-        <div class="col-md-6">{{ form.nombre|as_crispy_field }}</div>
-        <div class="col-md-6">{{ form.apellido|as_crispy_field }}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">{{ form.email|as_crispy_field }}</div>
-        <div class="col-md-6">{{ form.telefono|as_crispy_field }}</div>
-      </div>
-      {% endif %}
-
-      <p class="section-title">Datos de la atención</p>
-
-      {% if mascotas %}
-      <div class="mb-3">
-        <select id="mascota_guardada" name="mascota_id" class="form-select" onchange="recargarFormulario(this.form)">
-          {% for mascota in mascotas %}
-          <option value="{{ mascota.id }}" {% if mascota_elegida.id == mascota.id %}selected{% endif %}>
-            {{ mascota.nombre }} ({{ mascota.especie }})
-          </option>
+        {% if form.non_field_errors %}
+        <div class="alert alert-error">
+          {% for error in form.non_field_errors %}
+          <div>{{ error }}</div>
           {% endfor %}
-          <option value="" {% if not mascota_elegida %}selected{% endif %}>Escribir otro nombre</option>
-        </select>
-      </div>
-      {% endif %}
-
-      <div id="contenedor_datos_mascota" {% if mascota_elegida %}hidden{% endif %}>
-        <div class="row">
-          <div class="col-md-4">{{ form.nombre_mascota|as_crispy_field }}</div>
-          <div class="col-md-4">{{ form.especie_mascota|as_crispy_field }}</div>
-          <div class="col-md-4">{{ form.raza_mascota|as_crispy_field }}</div>
         </div>
-        <div class="row">
-          <div class="col-md-4">{{ form.sexo_mascota|as_crispy_field }}</div>
-          <div class="col-md-4">{{ form.edad_valor_mascota|as_crispy_field }}</div>
-          <div class="col-md-4">{{ form.edad_unidad_mascota|as_crispy_field }}</div>
+        {% endif %}
+
+        <div class="crispy-fields-wrap">
+          {% if not cuenta_completa %}
+          <p class="section-title">Datos de contacto</p>
+
+          <div class="row g-3">
+            <div class="col-md-6">{{ form.nombre|as_crispy_field }}</div>
+            <div class="col-md-6">{{ form.apellido|as_crispy_field }}</div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">{{ form.email|as_crispy_field }}</div>
+            <div class="col-md-6">{{ form.telefono|as_crispy_field }}</div>
+          </div>
+          {% endif %}
+
+          <p class="section-title">Datos de la atención</p>
+
+          {% if mascotas %}
+          <div class="mb-3">
+            <select id="mascota_guardada" name="mascota_id" class="form-select" onchange="recargarFormulario(this.form)">
+              {% for mascota in mascotas %}
+              <option value="{{ mascota.id }}" {% if mascota_elegida.id == mascota.id %}selected{% endif %}>
+                {{ mascota.nombre }} ({{ mascota.especie }})
+              </option>
+              {% endfor %}
+              <option value="" {% if not mascota_elegida %}selected{% endif %}>Escribir otro nombre</option>
+            </select>
+          </div>
+          {% endif %}
+
+          <div id="contenedor_datos_mascota" {% if mascota_elegida %}hidden{% endif %}>
+            <div class="row g-3">
+              <div class="col-md-4">{{ form.nombre_mascota|as_crispy_field }}</div>
+              <div class="col-md-4">{{ form.especie_mascota|as_crispy_field }}</div>
+              <div class="col-md-4">{{ form.raza_mascota|as_crispy_field }}</div>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-4">{{ form.sexo_mascota|as_crispy_field }}</div>
+              <div class="col-md-4">{{ form.edad_valor_mascota|as_crispy_field }}</div>
+              <div class="col-md-4">{{ form.edad_unidad_mascota|as_crispy_field }}</div>
+            </div>
+          </div>
+
+          {{ form.tipo_consulta|as_crispy_field }}
+
+          <div class="row g-3">
+            <div class="col-md-6">{{ form.fecha|as_crispy_field }}</div>
+            <div class="col-md-6">{{ form.hora|as_crispy_field }}</div>
+          </div>
+
+          {{ form.observaciones|as_crispy_field }}
         </div>
-      </div>
 
-      {{ form.tipo_consulta|as_crispy_field }}
-
-      <div class="row">
-        <div class="col-md-6">{{ form.fecha|as_crispy_field }}</div>
-        <div class="col-md-6">{{ form.hora|as_crispy_field }}</div>
-      </div>
-
-      {{ form.observaciones|as_crispy_field }}
-
-      <button type="submit" class="submit">Solicitar cita</button>
-    </form>
+        <div class="form-actions">
+          <button type="submit" class="btn-submit-mascota">Solicitar cita</button>
+        </div>
+      </form>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script>
       const notyf = new Notyf({

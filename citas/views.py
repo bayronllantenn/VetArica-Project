@@ -11,8 +11,8 @@ from django.utils import timezone
 from django.views.decorators.cache import never_cache
 
 from usuarios.views import es_personal_clinica
-from .forms import MascotaForm, SolicitudCitaForm, obtener_horas_disponibles, rango_del_dia
-from .models import Mascota, SolicitudCita
+from .forms import FichaMedicaForm, MascotaForm, SolicitudCitaForm, obtener_horas_disponibles, rango_del_dia
+from .models import FichaMedica, Mascota, SolicitudCita
 from .utils import get_webpay_transaction
 
 
@@ -268,20 +268,35 @@ def reserva_fallida(request, id=None):
 @never_cache
 @login_required(login_url='sin_acceso')
 def ingresos_doctora(request):
-    if not es_personal_clinica(request.user):
+    if request.user.rol != 'veterinaria':
         return redirect('sin_acceso')
 
     hoy = timezone.localdate()
     inicio_mes_dt = rango_del_dia(hoy.replace(day=1))[0]
 
-    citas_pagadas = SolicitudCita.objects.filter(estado_pago='Pagado').select_related('tipo_consulta').order_by('-fecha_pago')
+    citas_pagadas = SolicitudCita.objects.select_related('tipo_consulta').filter(estado_pago='Pagado')
+    citas_pagadas = citas_pagadas.order_by('-fecha_pago')
 
     citas_del_mes = citas_pagadas.filter(fecha_pago__gte=inicio_mes_dt)
     citas_del_anio = citas_pagadas.filter(fecha_pago__year=hoy.year)
 
-    ingresos_mes = citas_del_mes.aggregate(total=Sum('monto_pagado'))['total'] or 0
-    ingresos_anio = citas_del_anio.aggregate(total=Sum('monto_pagado'))['total'] or 0
-    ingresos_totales = citas_pagadas.aggregate(total=Sum('monto_pagado'))['total'] or 0
+    suma_mes = citas_del_mes.aggregate(total=Sum('monto_pagado'))['total']
+    if suma_mes is None:
+        ingresos_mes = 0
+    else:
+        ingresos_mes = suma_mes
+
+    suma_anio = citas_del_anio.aggregate(total=Sum('monto_pagado'))['total']
+    if suma_anio is None:
+        ingresos_anio = 0
+    else:
+        ingresos_anio = suma_anio
+
+    suma_total = citas_pagadas.aggregate(total=Sum('monto_pagado'))['total']
+    if suma_total is None:
+        ingresos_totales = 0
+    else:
+        ingresos_totales = suma_total
 
     context = {
         'citas_pagadas': citas_pagadas[:50],
@@ -290,3 +305,40 @@ def ingresos_doctora(request):
         'ingresos_totales': ingresos_totales,
     }
     return render(request, 'citas/ingresos.html', context)
+
+
+@never_cache
+@login_required(login_url='sin_acceso')
+def ficha_medica_detalle(request, cita_id):
+    if not es_personal_clinica(request.user):
+        return redirect('sin_acceso')
+
+    solicitud = get_object_or_404(SolicitudCita, id=cita_id)
+
+    try:
+        ficha = solicitud.ficha_medica
+    except FichaMedica.DoesNotExist:
+        ficha = None
+
+    if request.method == 'POST':
+        form = FichaMedicaForm(request.POST, instance=ficha)
+        if form.is_valid():
+            ficha_nueva = form.save(commit=False)
+            ficha_nueva.solicitud = solicitud
+            ficha_nueva.especie = solicitud.especie_mascota
+            ficha_nueva.raza = solicitud.raza_mascota
+            ficha_nueva.sexo = solicitud.sexo_mascota
+            ficha_nueva.edad_mascota = solicitud.edad_valor_mascota
+            ficha_nueva.save()
+            messages.success(request, 'Ficha clínica guardada correctamente.')
+            return redirect('agenda_doctora')
+        messages.error(request, 'Revisa los campos marcados en rojo.')
+    else:
+        form = FichaMedicaForm(instance=ficha)
+
+    context = {
+        'solicitud': solicitud,
+        'ficha': ficha,
+        'form': form,
+    }
+    return render(request, 'citas/ficha_medica_form.html', context)
